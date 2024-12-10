@@ -1,54 +1,212 @@
-// Countdown Timer
-const countdown = document.getElementById('countdown');
+document.addEventListener('DOMContentLoaded', () => {
+    // Countdown Timer
+    const countdown = document.getElementById('countdown');
+    const targetDate = new Date('2025-02-28T22:45:59').getTime();
 
-const targetDate = new Date('2024-12-31T23:59:59').getTime();
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
 
-function updateCountdown() {
-    const now = new Date().getTime();
-    const timeLeft = targetDate - now;
+        if (timeLeft <= 0) {
+            countdown.innerHTML = `<div class="countdown-item"><h3>Program Closed</h3></div>`;
+            clearInterval(timerInterval);
+            return;
+        }
 
-    if (timeLeft <= 0) {
-        countdown.innerHTML = `<h3>Application Is Over</h3>`;
-        clearInterval(timerInterval);
-        return;
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        countdown.innerHTML = `
+            <div class="countdown-item glass-card">
+                <h3>${days}</h3>
+                <p>Days</p>
+            </div>
+            <div class="countdown-item glass-card">
+                <h3>${hours}</h3>
+                <p>Hours</p>
+            </div>
+            <div class="countdown-item glass-card">
+                <h3>${minutes}</h3>
+                <p>Minutes</p>
+            </div>
+            <div class="countdown-item glass-card">
+                <h3>${seconds}</h3>
+                <p>Seconds</p>
+            </div>
+        `;
     }
 
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    const timerInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-    countdown.innerHTML = `
-        <div>
-            <h3>${days}</h3><p>Days</p>
-        </div>
-        <div>
-            <h3>${hours}</h3><p>Hours</p>
-        </div>
-        <div>
-            <h3>${minutes}</h3><p>Minutes</p>
-        </div>
-        <div>
-            <h3>${seconds}</h3><p>Seconds</p>
-        </div>
-    `;
-}
+    // Enhanced FAQ Functionality
+    const faqItems = document.querySelectorAll('.faq');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.question');
+        const answer = item.querySelector('.answer');
+        
+        // Add icon to questions
+        const icon = document.createElement('span');
+        icon.innerHTML = '&#x25BE;'; // Unicode down arrow
+        icon.className = 'faq-icon';
+        question.appendChild(icon);
+        
+        // Set initial state
+        answer.style.maxHeight = '0px';
+        answer.style.transition = 'max-height 0.3s ease-out';
+        answer.style.overflow = 'hidden';
+        
+        question.addEventListener('click', () => {
+            // Close all other answers first
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    const otherAnswer = otherItem.querySelector('.answer');
+                    const otherQuestion = otherItem.querySelector('.question');
+                    otherAnswer.style.maxHeight = '0px';
+                    otherQuestion.classList.remove('active');
+                }
+            });
+            
+            // Toggle current answer
+            const isOpen = question.classList.contains('active');
+            if (!isOpen) {
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                question.classList.add('active');
+            } else {
+                answer.style.maxHeight = '0px';
+                question.classList.remove('active');
+            }
+        });
+    });
 
-const timerInterval = setInterval(updateCountdown, 1000);
-updateCountdown();
+    // Mobile Menu Toggle
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
 
-// FAQ Toggle Functionality
-const faqItems = document.querySelectorAll('.faq');
+    menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
 
-faqItems.forEach(item => {
-    const question = item.querySelector('.question');
-    const answer = item.querySelector('.answer');
+    // Scroll Animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    });
 
-    answer.style.display = 'none';
+    const hiddenElements = document.querySelectorAll('.glass-card');
+    hiddenElements.forEach((el) => observer.observe(el));
 
-    question.addEventListener('click', () => {
-        const isVisible = answer.style.display === 'block';
-        answer.style.display = isVisible ? 'none' : 'block';
-        question.classList.toggle('active', !isVisible);
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Parallax Effect
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        document.querySelector('.background-animation').style.transform = 
+            `translate3d(0, ${scrolled * 0.5}px, 0)`;
+    });
+
+    // Star Background
+    function createStars() {
+        const starContainer = document.createElement('div');
+        starContainer.classList.add('star-container');
+        document.body.appendChild(starContainer);
+
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            starContainer.appendChild(star);
+        }
+    }
+
+    createStars();
+});
+
+// Navbar Toggle
+document.getElementById('navbar-toggle').addEventListener('click', function() {
+    document.getElementById('navbar-menu').classList.toggle('active');
+});
+
+// Enhanced Interactions
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scroll animation
+    const scrollElements = document.querySelectorAll('.program-content, .video-wrapper, .content-box');
+    
+    const elementInView = (el, percentageScroll = 100) => {
+        const elementTop = el.getBoundingClientRect().top;
+        return (
+            elementTop <= 
+            ((window.innerHeight || document.documentElement.clientHeight) * (percentageScroll/100))
+        );
+    };
+    
+    const displayScrollElement = (element) => {
+        element.classList.add('scrolled');
+    };
+    
+    const hideScrollElement = (element) => {
+        element.classList.remove('scrolled');
+    };
+    
+    const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+            if (elementInView(el, 100)) {
+                displayScrollElement(el);
+            } else {
+                hideScrollElement(el);
+            }
+        });
+    };
+    
+    // Throttle function for scroll performance
+    let throttleTimer;
+    const throttle = (callback, time) => {
+        if (throttleTimer) return;
+        
+        throttleTimer = true;
+        setTimeout(() => {
+            callback();
+            throttleTimer = false;
+        }, time);
+    };
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', () => {
+        throttle(handleScrollAnimation, 250);
+    });
+    
+    // Interactive hover effects
+    const videoContainer = document.querySelector('.video-wrapper');
+    videoContainer.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = videoContainer.getBoundingClientRect();
+        const x = (e.clientX - left) / width;
+        const y = (e.clientY - top) / height;
+        
+        videoContainer.style.transform = `
+            perspective(1000px)
+            rotateY(${x * 5}deg)
+            rotateX(${y * -5}deg)
+            translateY(-10px)
+        `;
+    });
+    
+    videoContainer.addEventListener('mouseleave', () => {
+        videoContainer.style.transform = 'translateY(0)';
     });
 });

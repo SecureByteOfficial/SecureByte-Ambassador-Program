@@ -2,15 +2,15 @@ const ambassadors = [
     { 
         name: 'John Doe', 
         institute: 'ABC University', 
-        picture: 'https://via.placeholder.com/120',
-        rating: 4.8,
+        picture: './ambpic/dp1.jpg',
+        rating: 3.8,
         currentPosition: 'Cybersecurity Specialist',
         about: 'John has been working in cybersecurity for over 5 years, helping companies build secure networks.',
     },
     { 
         name: 'Jane Smith', 
         institute: 'XYZ Institute', 
-        picture: 'https://via.placeholder.com/120',
+        picture: './ambpic/dp1.jpg',
         rating: 4.7,
         currentPosition: 'AI Researcher',
         about: 'Jane is passionate about AI and works on developing machine learning algorithms for real-time security.',
@@ -18,7 +18,7 @@ const ambassadors = [
     { 
         name: 'Mike Johnson', 
         institute: 'LMN College', 
-        picture: 'https://via.placeholder.com/120',
+        picture: './ambpic/dp1.jpg',
         rating: 4.9,
         currentPosition: 'Ethical Hacker',
         about: 'Mike is a recognized ethical hacker with a focus on penetration testing and vulnerability assessments.',
@@ -26,7 +26,7 @@ const ambassadors = [
     { 
         name: 'Sara Lee', 
         institute: 'PQR University', 
-        picture: 'https://via.placeholder.com/120',
+        picture: './ambpic/dp1.jpg',
         rating: 4.5,
         currentPosition: 'Cybersecurity Analyst',
         about: 'Sara analyzes security risks and helps organizations identify potential vulnerabilities in their systems.',
